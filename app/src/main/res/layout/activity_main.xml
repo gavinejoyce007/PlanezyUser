@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.planezy.planezyuserapp.MainActivity">
+
+  <ImageView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:src="@drawable/pic4"
+      android:scaleType="centerCrop"
+      android:contentDescription="@string/bgimage"
+      android:id="@+id/bgimage"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true" />
+
+ <ImageView
+     android:id="@+id/logo"
+     android:layout_width="150dp"
+     android:layout_height="wrap_content"
+     android:src="@drawable/logo"
+     android:layout_marginTop="24dp"
+     android:layout_alignParentTop="true"
+     android:layout_alignRight="@+id/notauser"
+     android:layout_alignEnd="@+id/notauser" />
+
+<fragment
+    android:name="com.planezy.planezyuserapp.FragmentLoginOptions"
+    android:id="@+id/loginfragment"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:layout="@layout/login_options_fragment"
+    android:layout_below="@+id/logo"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true">
+</fragment>
+    
+   <com.facebook.login.widget.LoginButton
+       android:layout_width="300dp"
+       android:layout_height="80dp"
+       android:id="@+id/fb_login"
+       android:textColor="#ffffff"
+       android:layout_marginTop="24dp"
+       android:layout_marginLeft="4dp"
+       android:layout_marginStart="4dp"
+       android:layout_centerHorizontal="true"
+       android:layout_below="@+id/loginfragment"
+       android:layout_alignLeft="@+id/google_sign_in"
+       android:layout_alignStart="@+id/google_sign_in" />
+
+   <com.google.android.gms.common.SignInButton
+       android:id="@+id/google_sign_in"
+       android:layout_width="310dp"
+       android:layout_height="45dp"
+       android:text="@string/googlesignin"
+       android:textSize="14sp"
+       android:layout_below="@+id/fb_login"
+       android:layout_centerHorizontal="true"
+       android:textColor="#ffffff"
+       android:textAllCaps="false"
+       android:layout_marginTop="10dp"/>
+
+    <TextView
+        android:id="@+id/notauser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/google_sign_in"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/black"
+        android:text="@string/notauser" />
+
+ <Button
+        android:id="@+id/signup_button"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="@string/signuptext"
+        android:clickable="true"
+        android:onClick="SignupFunc"
+        android:background="#ffffff"
+        android:layout_below="@+id/notauser"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp" />
+
+
+</RelativeLayout>

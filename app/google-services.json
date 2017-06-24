@@ -1,0 +1,99 @@
+{
+  "project_info": {
+    "project_number": "493843023745",
+    "firebase_url": "https://planezy-wedding.firebaseio.com",
+    "project_id": "planezy-wedding",
+    "storage_bucket": "planezy-wedding.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493843023745:android:33104dcef3c557da",
+        "android_client_info": {
+          "package_name": "com.developer.gavinejoyce.wedding"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493843023745-69lppo17cbkr4ic8tdkrsi67obhd13ot.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.developer.gavinejoyce.wedding",
+            "certificate_hash": "e82ad44fcd4278fad8442e40c681075770c411e1"
+          }
+        },
+        {
+          "client_id": "493843023745-4v7qb6856vdcthe74rbml47h2qduc2ce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkwSZZLjWk75XzApUHqbnayEc4StUAFcg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493843023745-4v7qb6856vdcthe74rbml47h2qduc2ce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:493843023745:android:3f559a032a23d19e",
+        "android_client_info": {
+          "package_name": "com.planezy.planezyuserapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "493843023745-sa1p6manhi9ujs9mdb7u2bo2m0nt95dq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.planezy.planezyuserapp",
+            "certificate_hash": "4f650f4b3279f63a5a473a010f8281461c310166"
+          }
+        },
+        {
+          "client_id": "493843023745-4v7qb6856vdcthe74rbml47h2qduc2ce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkwSZZLjWk75XzApUHqbnayEc4StUAFcg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "493843023745-4v7qb6856vdcthe74rbml47h2qduc2ce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

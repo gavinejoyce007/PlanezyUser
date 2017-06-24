@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Planezy</string>
+    <string name="slide1_desc">pic1</string>
+    <string name="slide2_desc">pic2</string>
+    <string name="slide3_desc">pic3</string>
+    <string name="buttonstart">START</string>
+    <string name="buttonnext">NEXT</string>
+    <string name="buttonskip">SKIP</string>
+    <string name="logintext">LOG IN</string>
+    <string name="signuptext">SIGN UP</string>
+    <string name="bgimage">BackGroundImage</string>
+
+    <!-- Strings related to login and signup-->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="prompt_username">Name</string>
+    <string name="prompt_phonenumber">Phone Number</string>
+    <string name="prompt_confirmpassword">Confirm Password</string>
+    <string name="error_invalid_username">Username is required</string>
+    <string name="error_invalid_email">Invalid Email Address</string>
+    <string name="error_invalid_phonenumber">Invalid Phone Number</string>
+    <string name="error_password_mismatch">Password Mismatch</string>
+    <string name="error_invalid_password">Password must be atleast 6 characters</string>
+    <string name="facebook_app_id">735703709907780</string>
+    <string name="fb_login_protocol_scheme">fb735703709907780</string>
+    <string name="googlesignin">Continue with Google</string>
+    <string name="fbsignin">Continue with Facebook</string>
+    <string name="notauser">Don\'t have an account?</string>
+
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_image_listing">ImageListing</string>
+    <string name="title_activity_login">Login</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
