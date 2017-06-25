@@ -1,17 +1,17 @@
 package com.planezy.planezyuserapp;
 
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageInstaller;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.FragmentActivity;
-import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.AccessToken;
@@ -35,14 +35,16 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class MainActivity extends FragmentActivity implements GoogleApiClient.OnConnectionFailedListener {
 
@@ -51,6 +53,9 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
     CallbackManager callbackManager;
     String user;
     private FirebaseAuth mAuth;
+    EditText emaili,pass;
+    TextInputLayout inputlayoutemail,inputlayoutpassword;
+    //LayoutInflater inflator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,14 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         signInButton.setSize(SignInButton.SIZE_STANDARD);
+        Button planlog = (Button)findViewById(R.id.login_button1);
+        planlog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                frag();
+            }
+        });
+
         /*try {
             PackageInfo info = getPackageManager().getPackageInfo(
                     "com.planezy.planezyuserapp",
@@ -77,7 +90,6 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
         } catch (NoSuchAlgorithmException e) {
 
         }*/
-
 
         setGooglePlusButtonText(signInButton,"Continue with Google");
         callbackManager = CallbackManager.Factory.create();
@@ -103,10 +115,11 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                             b1.putString("UserName",user);
                             b1.putString("UserEmail",userEmail);
                             b1.putString("UserPhoto",userPhoto);
+                            b1.putString("Provider","Facebook");
                             in.putExtras(b1);
                             startActivity(in);
                         }
-                        Toast.makeText(getApplicationContext(), "+" + user, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Welcome " + user, Toast.LENGTH_LONG).show();
                     }
                 });
                 Bundle parameters = new Bundle();
@@ -150,65 +163,120 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
 
-        //logout abc = new logout(mGoogleApiClient);
-       /* mAuth.signInWithEmailAndPassword(email, passwd)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("FragmentLogin", "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Intent intent = new Intent(MainActivity.this, ImageListing.class);
-                            startActivity(intent);
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("FragmentLogin", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
-                        }
-                    }
-                });*/
-
-
+        MyGoogleApiClient_Singleton gc = new MyGoogleApiClient_Singleton();
+        gc.getInstance(mGoogleApiClient);
     }
+
+public void frag(){
+    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    LayoutInflater inflator = this.getLayoutInflater();
+    final View dialogView = inflator.inflate(R.layout.login_options_fragment,null);
+    builder.setView(dialogView);
+    Button login = (Button)dialogView.findViewById(R.id.login_button);
+    emaili = (EditText)dialogView.findViewById(R.id.emailid);
+    pass = (EditText)dialogView.findViewById(R.id.password);
+    inputlayoutemail = (TextInputLayout)dialogView.findViewById(R.id.layout_email);
+    inputlayoutpassword= (TextInputLayout)dialogView.findViewById(R.id.layout_password);
+    //emaili.addTextChangedListener(new MainActivity.MyTextWatcher(emaili));
+    //pass.addTextChangedListener(new MainActivity.MyTextWatcher(pass));
+    builder.setTitle("Planezy");
+    //builder.setMessage("Login");
+    login.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+                String email = emaili.getText().toString();
+                String passwd = pass.getText().toString();
+
+                mAuth.signInWithEmailAndPassword(email, passwd)
+                        .addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    // Sign in success, update UI with the signed-in user's information
+                                    Log.d("FragmentLogin", "signInWithEmail:success");
+                                    FirebaseUser user = mAuth.getCurrentUser();
+                                    String name = user.getDisplayName();
+                                    String mailid = user.getEmail();
+                                    Bundle b2 = new Bundle();
+                                    b2.putString("UserName", name);
+                                    b2.putString("UserEmail", mailid);
+                                    b2.putString("Provider","Firebase");
+                                    Intent intent = new Intent(getApplicationContext(), ImageListing.class);
+                                    intent.putExtras(b2);
+                                    startActivity(intent);
+                                } else {
+                                    // If sign in fails, display a message to the user.
+                                    Log.w("FragmentLogin", "signInWithEmail:failure", task.getException());
+                                    Toast.makeText(getApplicationContext(), "Authentication failed.",
+                                            Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+        }
+    });
+    AlertDialog d = builder.create();
+    d.show();
+}
+    /*private boolean validateEmailAddress() {
+        String email = emaili.getText().toString().trim();
+        if (email.isEmpty() || !isValidEmail(email)) {
+            inputlayoutemail.setError(getString(R.string.error_invalid_email));
+            requestFocus(emaili);
+            return false;
+        } else
+            inputlayoutemail.setErrorEnabled(false);
+        return true;
+    }
+
+    private static boolean isValidEmail(String email){
+        return !TextUtils.isEmpty(email) && Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
+    private boolean validatePassword(){
+        if(pass.getText().toString().trim().isEmpty())
+        {
+            inputlayoutpassword.setError(getString(R.string.error_invalid_password));
+            requestFocus(pass);
+            return false;
+        }
+        else
+            inputlayoutpassword.setErrorEnabled(false);
+        return true;
+    }
+
+    private void requestFocus(View view)
+    {
+        if(view.requestFocus()){
+            getParent().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }*/
 
     @Override
     public void onStart() {
         super.onStart();
 
         if (AccessToken.getCurrentAccessToken() != null) {
-            // Profile.getCurrentProfile();
-            // startActivity(new Intent(MainActivity.this,ImageListing.class));
-            AccessToken atoken = AccessToken.getCurrentAccessToken();
-            GraphRequest request = GraphRequest.newMeRequest(atoken, new GraphRequest.GraphJSONObjectCallback() {
+            GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
                 @Override
                 public void onCompleted(JSONObject object, GraphResponse response) {
                     Bundle bFacebookData = getFacebookData(object);
                     if (bFacebookData != null) {
-
-
                         String fname = bFacebookData.getString("first_name");
                         String lname = bFacebookData.getString("last_name");
                         user = fname + " " + lname;
                         String userEmail = bFacebookData.getString("email");
-                        //Toast.makeText(getApplicationContext(), "" + userEmail, Toast.LENGTH_LONG).show();
                         String userPhoto = bFacebookData.getString("profile_pic");
                         Intent in = new Intent(MainActivity.this, ImageListing.class);
                         Bundle b1 = new Bundle();
                         b1.putString("UserName", user);
                         b1.putString("UserEmail", userEmail);
                         b1.putString("UserPhoto", userPhoto);
+                        b1.putString("Provider", "Facebook");
                         in.putExtras(b1);
                         startActivity(in);
-                    } else {
-
                     }
-                    Toast.makeText(getApplicationContext(), "Welcome " + user, Toast.LENGTH_LONG).show();
-
-
+                    Toast.makeText(getApplicationContext(), "+" + user, Toast.LENGTH_LONG).show();
                 }
             });
             Bundle parameters = new Bundle();
@@ -225,12 +293,9 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                 GoogleSignInResult result = opr.get();
                 handleSignInResult(result);
             } else {
-
-                //showProgressDialog();
                 opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                     @Override
                     public void onResult(GoogleSignInResult googleSignInResult) {
-                        //hideProgressDialog();
                         handleSignInResult(googleSignInResult);
                     }
                 });
@@ -338,13 +403,14 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
                 Bundle b1 = new Bundle();
                 b1.putString("UserName", personName);
                 b1.putString("UserEmail", personEmail);
+                b1.putString("Provider","Google");
                 in.putExtras(b1);
                 startActivity(in);
 
         }
         else
         {
-         //   Toast.makeText(getApplicationContext(),"SignIn Failure",Toast.LENGTH_LONG).show();
+         //Toast.makeText(getApplicationContext(),"SignIn Failure",Toast.LENGTH_LONG).show();
         }
     }
     protected void setGooglePlusButtonText(SignInButton signInbtn, String text)
@@ -360,5 +426,30 @@ public class MainActivity extends FragmentActivity implements GoogleApiClient.On
             }
         }
     }
+    /*private class MyTextWatcher implements TextWatcher {
+        private View view;
+        private MyTextWatcher(View view){
+            this.view=view;
+        }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before, int count){
+        }
+
+        public void afterTextChanged(Editable s) {
+            switch (view.getId()){
+                case R.id.emailid:
+                    validateEmailAddress();
+                    break;
+                case R.id.password:
+                    validatePassword();
+                    break;
+            }
+        }
+    }*/
 
 }
+
+

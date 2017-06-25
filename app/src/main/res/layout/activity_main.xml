@@ -26,27 +26,29 @@
      android:layout_alignRight="@+id/notauser"
      android:layout_alignEnd="@+id/notauser" />
 
-<fragment
-    android:name="com.planezy.planezyuserapp.FragmentLoginOptions"
-    android:id="@+id/loginfragment"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    tools:layout="@layout/login_options_fragment"
-    android:layout_below="@+id/logo"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true">
-</fragment>
+    <Button
+        android:id="@+id/login_button1"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
+        android:background="#448AFF"
+        android:textColor="#ffffff"
+        android:clickable="true"
+        android:text="@string/logintext"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"/>
+
     
    <com.facebook.login.widget.LoginButton
        android:layout_width="300dp"
        android:layout_height="80dp"
        android:id="@+id/fb_login"
        android:textColor="#ffffff"
-       android:layout_marginTop="24dp"
+       android:layout_marginTop="10dp"
        android:layout_marginLeft="4dp"
        android:layout_marginStart="4dp"
        android:layout_centerHorizontal="true"
-       android:layout_below="@+id/loginfragment"
+       android:layout_below="@+id/login_button1"
        android:layout_alignLeft="@+id/google_sign_in"
        android:layout_alignStart="@+id/google_sign_in" />
 

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -19,20 +21,31 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
 import com.squareup.picasso.Picasso;
 
 public class ImageListing extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    GoogleApiClient mGoogleApiClient;
+    String log;
+    private FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_listing);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mAuth = FirebaseAuth.getInstance();
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+
 
         Bundle b1 = getIntent().getExtras();
         String name="",email="";
@@ -40,6 +53,7 @@ public class ImageListing extends AppCompatActivity
         {
             name = b1.getString("UserName");
             email = b1.getString("UserEmail");
+            log = b1.getString("Provider");
         }
 
 
@@ -125,8 +139,51 @@ public class ImageListing extends AppCompatActivity
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
+            if(log.equals("Google")) {
+                MyGoogleApiClient_Singleton gac = new MyGoogleApiClient_Singleton();
+                gac.getInstance(null);
+                mGoogleApiClient = gac.get_GoogleApiClient();
+                mGoogleApiClient.connect();
+                mGoogleApiClient.registerConnectionCallbacks(new GoogleApiClient.ConnectionCallbacks() {
+                    @Override
+                    public void onConnected(@Nullable Bundle bundle) {
+                        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+                            @Override
+                            public void onResult(@NonNull Status status) {
+                                Toast.makeText(ImageListing.this, "G+ Logged out", Toast.LENGTH_SHORT).show();
+                                Intent in = new Intent(ImageListing.this, MainActivity.class);
+                                log = "Google";
+                                Bundle b1 = new Bundle();
+                                b1.putString("log",log);
+                                in.putExtras(b1);
+                                startActivity(in);
+                            }
+                        });
+                    }
 
+                    @Override
+                    public void onConnectionSuspended(int i) {
 
+                    }
+                });
+            }else if(log.equals("Facebook")) {
+                Toast.makeText(ImageListing.this, "FB Logged out", Toast.LENGTH_SHORT).show();
+                log = "Facebook";
+                Intent in = new Intent(ImageListing.this, MainActivity.class);
+                Bundle b1 = new Bundle();
+                b1.putString("log", log);
+                in.putExtras(b1);
+                startActivity(in);
+                LoginManager.getInstance().logOut();
+                startActivity(in);
+            }
+            else if(log.equals("Firebase")){
+                mAuth.signOut();
+                Toast.makeText(ImageListing.this, "Logged out", Toast.LENGTH_SHORT).show();
+                Intent in = new Intent(ImageListing.this, MainActivity.class);
+                startActivity(in);
+
+            }
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

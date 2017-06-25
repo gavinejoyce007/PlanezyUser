@@ -1,39 +1,24 @@
 package com.planezy.planezyuserapp;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+
 /**
  * Created by Gavine Joyce on 23/06/2017.
  */
 
 public class User {
-    private String name="";
-    private String email="";
-    private String phone="";
-    public String getName() {
-        return name;
+    public GoogleApiClient getmGoogle() {
+        return mGoogle;
     }
 
-    public String getEmail() {
-        return email;
+    public void setmGoogle(GoogleApiClient mGoogle) {
+        this.mGoogle = mGoogle;
     }
 
-    public String getPhone() {
-        return phone;
-    }
+    private GoogleApiClient mGoogle;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public User(GoogleApiClient mGoogleApiClient){
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-
-    public User(){
-
+        this.mGoogle = mGoogleApiClient;
     }
 }
